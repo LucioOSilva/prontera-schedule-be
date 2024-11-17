@@ -1,8 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { RESTResponse, IRESTResponse } from '../service/RESTService';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { User, UserDocument } from './schemas/user.schema';
 
 @Injectable()
 export class AuthService {
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+
+  public async registerUser(authData: any): Promise<IRESTResponse> {
+    try {
+      const user = new this.userModel(authData); // Cria um novo documento
+      await user.save(); // Salva no MongoDB
+      return RESTResponse(201, { id: user._id, email: user.email }, null);
+    } catch (error) {
+      return RESTResponse(500, null, error.message);
+    }
+  }
+
   public async login(authLogin: any): Promise<IRESTResponse> {
     try {
       console.log(authLogin);
@@ -23,12 +38,4 @@ export class AuthService {
       return RESTResponse(500, null, error.message);
     }
   }
-
-  // public async decode({
-  //   authorization,
-  // }: IAuthTokenDecodeDTO): Promise<IRESTResponse> {
-  //   const tokenHash = authorization ? authorization.replace('Bearer ', '') : '';
-  //   const dataResponse = { isAuthed: isValidJWT(tokenHash) };
-  //   return RESTResponse(200, dataResponse, null);
-  // }
 }

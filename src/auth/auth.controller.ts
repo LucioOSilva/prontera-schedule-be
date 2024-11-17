@@ -20,13 +20,13 @@ import { IRESTResponse } from '../service/RESTService';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post('/')
+  @Post('/register')
+  async register(@Body() authData: any): Promise<IRESTResponse> {
+    return this.authService.registerUser(authData);
+  }
+
+  @Post('/login')
   async login(@Body() authLogin: any): Promise<IRESTResponse> {
     return this.authService.login(authLogin);
   }
-
-  // @Post('/login/decode')
-  // async decode(@Headers() auth: any): Promise<IRESTResponse> {
-  //   return this.authService.decode(auth);
-  // }
 }
