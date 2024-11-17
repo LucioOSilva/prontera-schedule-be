@@ -17,6 +17,10 @@ export const RESTResponse = (
 
   RESTResponse.statusCode = statusCode;
   RESTResponse.data = data;
-  RESTResponse.message = message ? message : null;
+  RESTResponse.message = message
+    ? Array.isArray(message)
+      ? message[0]
+      : message
+    : null;
   return RESTResponse;
 };
