@@ -17,6 +17,7 @@ import { validationSchema } from './config/schema';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         uri: configService.get<string>('DBCONNECTION'), // Lê a URI do banco do .env
+        dbName: `PRONTERA_SCHEDULE_${configService.get<string>('ENV')}`,
       }),
     }),
     AuthModule,
