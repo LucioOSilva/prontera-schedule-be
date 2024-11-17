@@ -5,7 +5,9 @@ import {
   Post,
   Param,
   HttpException,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
 import { User } from '../schemas/user.schema';
@@ -21,6 +23,7 @@ export class UserController {
     return user;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('/by-email/:email')
   async getUserByEmail(@Param('email') email: string): Promise<any> {
     const user = await this.userService.findByEmail(email);
