@@ -14,13 +14,15 @@ import {
   Options,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { AuthDto } from './dto/auth.dto';
 
 @Controller('api/auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('/login')
-  async login(@Body() authLogin: any): Promise<any> {
+  async login(@Body() authLogin: AuthDto): Promise<any> {
+    console.log('authLogin', authLogin);
     return this.authService.login(authLogin);
   }
 }
