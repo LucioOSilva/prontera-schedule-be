@@ -9,4 +9,10 @@ export const validationSchema = Joi.object({
     'any.only': 'ENV deve ser um dos seguintes valores: DEV, STAGE ou PROD.',
     'any.required': 'ENV é obrigatório, não encontrado.',
   }),
+  JWT_SECRET: Joi.string().required().messages({
+    'any.required': 'JWT_SECRET é obrigatório, não encontrado.',
+  }),
+  ENCRYPT_SECRET: Joi.string().required().messages({
+    'any.required': 'ENCRYPT_SECRET é obrigatório, não encontrado.',
+  }),
 });
