@@ -14,17 +14,12 @@ export class UserService {
     return this.userModel.findOne({ email }).exec();
   }
 
-  public async createUser(userDTO: UserDto): Promise<IRESTResponse<any>> {
-    try {
-      const userExists = await this.findByEmail(userDTO.email);
-      if (userExists) throw new Error('Email already in use');
-
+  public async createUser(userDTO: UserDto): Promise<User | null> {
+    const userExists = await this.findByEmail(userDTO.email);
+    if (!userExists) {
       const user = new this.userModel(userDTO);
       await user.save();
-      return RESTResponse(201, { id: user._id, email: user.email }, null);
-    } catch (error: any) {
-      const code = error.message.includes('Email already in use') ? 400 : 500;
-      return RESTResponse(code, null, error.message);
+      return user;
     }
   }
 }

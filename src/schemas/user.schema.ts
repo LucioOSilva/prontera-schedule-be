@@ -11,7 +11,7 @@ export class User {
   @Prop({ required: true })
   email: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, select: false })
   password: string;
 
   @Prop({
@@ -23,6 +23,9 @@ export class User {
 
   @Prop({ default: Date.now })
   createdAt: Date;
+
+  @Prop({ select: false })
+  __v: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

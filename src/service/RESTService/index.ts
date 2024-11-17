@@ -1,5 +1,5 @@
 export interface IRESTResponse<T = any> {
-  status?: number | null;
+  statusCode?: number | null;
   data?: T | null;
   message?: string | null;
 }
@@ -20,17 +20,17 @@ export const statusResponseObject = () => {
 };
 
 export const RESTResponse = (
-  status: number = 500,
+  statusCode: number = 500,
   data: any = null,
   message: string = null,
 ) => {
-  const RESTResponse: IRESTResponse<null> = {
-    status: null,
+  const RESTResponse: IRESTResponse<any> = {
+    statusCode: null,
     data: null,
     message: null,
   };
 
-  RESTResponse.status = status;
+  RESTResponse.statusCode = statusCode;
   RESTResponse.data = data;
   RESTResponse.message = message ? message : null;
   return RESTResponse;
