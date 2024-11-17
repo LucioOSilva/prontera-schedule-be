@@ -22,7 +22,7 @@ export class AuthController {
 
   @Post('/register')
   async register(@Body() authData: any): Promise<IRESTResponse<any>> {
-    return this.authService.registerUser(authData);
+    return await this.authService.registerUser(authData);
   }
 
   @Post('/login')

@@ -13,8 +13,9 @@ export class AuthService {
       const user = new this.userModel(authData); // Cria um novo documento
       await user.save(); // Salva no MongoDB
       return RESTResponse(201, { id: user._id, email: user.email }, null);
-    } catch (error) {
-      return RESTResponse(500, null, error.message);
+    } catch (error: any) {
+      const code = error.message.includes('User validation failed') ? 400 : 500;
+      return RESTResponse(code, null, error.message);
     }
   }
 
