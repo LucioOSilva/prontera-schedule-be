@@ -8,7 +8,7 @@ import { User, UserDocument } from './schemas/user.schema';
 export class AuthService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  public async registerUser(authData: any): Promise<IRESTResponse> {
+  public async registerUser(authData: any): Promise<IRESTResponse<any>> {
     try {
       const user = new this.userModel(authData); // Cria um novo documento
       await user.save(); // Salva no MongoDB
@@ -18,7 +18,7 @@ export class AuthService {
     }
   }
 
-  public async login(authLogin: any): Promise<IRESTResponse> {
+  public async login(authLogin: any): Promise<IRESTResponse<any>> {
     try {
       console.log(authLogin);
       // const user: IUser = await QR.loadOne(

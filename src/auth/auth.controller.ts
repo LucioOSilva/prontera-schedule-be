@@ -21,12 +21,12 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('/register')
-  async register(@Body() authData: any): Promise<IRESTResponse> {
+  async register(@Body() authData: any): Promise<IRESTResponse<any>> {
     return this.authService.registerUser(authData);
   }
 
   @Post('/login')
-  async login(@Body() authLogin: any): Promise<IRESTResponse> {
+  async login(@Body() authLogin: any): Promise<IRESTResponse<any>> {
     return this.authService.login(authLogin);
   }
 }
