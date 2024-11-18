@@ -1,4 +1,3 @@
-// src/auth/auth.service.ts
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
@@ -13,27 +12,34 @@ export class AuthService {
     private encryptService: EncryptService,
   ) {}
 
-  async validateUser(email: string, password: string): Promise<any> {
-    const user = await this.userService.findByEmail(email);
-    const userHashedPassword = user.password;
-    const hashedPassword = this.encryptService.encrypt(password);
-
-    if (user && userHashedPassword === hashedPassword) {
-      const { password, ...result } = user;
-      return result;
-    }
-    return null;
+  private async validateAuthUser(
+    email: string,
+    password: string,
+  ): Promise<boolean> {
+    const query = { email };
+    const returnFields = { password: 1 };
+    const user = await this.userService.findOne(query, returnFields);
+    if (!user) return false;
+    const isValidPassword = this.encryptService.checkEncrypt(
+      password,
+      user.password,
+    );
+    return user && isValidPassword;
   }
 
   async login(authLogin: AuthDto): Promise<any> {
-    const user = await this.validateUser(authLogin.email, authLogin.password);
-    if (!user) {
+    const isUserAuthentic = await this.validateAuthUser(
+      authLogin.email,
+      authLogin.password,
+    );
+    if (!isUserAuthentic) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const payload = { email: user.email, sub: user.id };
+    const userData = await this.userService.findByEmail(authLogin.email);
+    const payload = { sub: userData._id, data: userData };
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: await this.jwtService.signAsync(payload),
     };
   }
 }

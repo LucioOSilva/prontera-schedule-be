@@ -22,7 +22,6 @@ export class AuthController {
 
   @Post('/login')
   async login(@Body() authLogin: AuthDto): Promise<any> {
-    console.log('authLogin', authLogin);
     return this.authService.login(authLogin);
   }
 }

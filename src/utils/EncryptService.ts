@@ -1,20 +1,22 @@
-import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
-import { v5 as uuidv5 } from 'uuid';
+import { createHash } from 'crypto';
 
 @Injectable()
 export class EncryptService {
-  private readonly passwordSecret: string;
+  private readonly encryptedSecret: string;
 
-  constructor(private readonly configService: ConfigService) {
-    this.passwordSecret = this.configService.get<string>('ENCRYPT_SECRET');
+  constructor() {
+    this.encryptedSecret = process.env.ENCRYPT_SECRET;
   }
 
-  encrypt(password: string): string {
-    return uuidv5(password, this.passwordSecret);
+  encrypt(text: string): string {
+    const hash = createHash('sha256');
+    hash.update(text + this.encryptedSecret);
+    return hash.digest('hex');
   }
 
-  checkEncrypt(password: string, encryptedPassword: string): boolean {
-    return uuidv5(password, this.passwordSecret) === encryptedPassword;
+  checkEncrypt(text: string, encryptedText: string): boolean {
+    const hashedPassword = this.encrypt(text);
+    return hashedPassword === encryptedText;
   }
 }
