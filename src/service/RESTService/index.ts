@@ -1,26 +1,5 @@
-export interface IRESTResponse<T> {
-  statusCode?: number | null;
-  data?: T | null;
-  message?: string | null;
-}
+import { ExceptionInterceptorFilter } from './exceptionInterceptorFilter';
+import { RESTResponse } from './RESTResponse';
+import { ResponseInterceptor } from './responseInterceptor';
 
-export const RESTResponse = (
-  statusCode: number = 500,
-  data: any = null,
-  message: string = null,
-) => {
-  const RESTResponse: IRESTResponse<any> = {
-    statusCode: null,
-    data: null,
-    message: null,
-  };
-
-  RESTResponse.statusCode = statusCode;
-  RESTResponse.data = data;
-  RESTResponse.message = message
-    ? Array.isArray(message)
-      ? message[0]
-      : message
-    : null;
-  return RESTResponse;
-};
+export { ExceptionInterceptorFilter, ResponseInterceptor, RESTResponse };
