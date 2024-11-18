@@ -16,7 +16,7 @@ import { User } from '../schemas/user.schema';
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Post('/create')
   async createUser(@Body() userData: UserDto): Promise<User> {
     const user = await this.userService.createUser(userData);

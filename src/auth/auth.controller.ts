@@ -1,18 +1,4 @@
-import {
-  Controller,
-  Get,
-  Query,
-  Post,
-  Body,
-  Put,
-  Headers,
-  Param,
-  Delete,
-  Res,
-  Req,
-  HttpStatus,
-  Options,
-} from '@nestjs/common';
+import { Controller, Post, Body, Req, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth.dto';
 
@@ -23,5 +9,11 @@ export class AuthController {
   @Post('/login')
   async login(@Body() authLogin: AuthDto): Promise<any> {
     return this.authService.login(authLogin);
+  }
+
+  @Get('/verify-token')
+  async verifyToken(@Req() req: any): Promise<any> {
+    const token = req.headers.authorization?.split(' ')[1];
+    return this.authService.verifyToken(token);
   }
 }

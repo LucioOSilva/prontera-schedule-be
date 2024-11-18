@@ -27,6 +27,18 @@ export class AuthService {
     return user && isValidPassword;
   }
 
+  async verifyToken(token: string): Promise<any> {
+    if (!token) {
+      throw new UnauthorizedException('Token not provided');
+    }
+    try {
+      const decoded = await this.jwtService.verifyAsync(token);
+      return { valid: true, decoded };
+    } catch (error) {
+      throw new UnauthorizedException('Invalid token');
+    }
+  }
+
   async login(authLogin: AuthDto): Promise<any> {
     const isUserAuthentic = await this.validateAuthUser(
       authLogin.email,
@@ -37,7 +49,7 @@ export class AuthService {
     }
 
     const userData = await this.userService.findByEmail(authLogin.email);
-    const payload = { sub: userData._id, data: userData };
+    const payload = { sub: userData._id };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
