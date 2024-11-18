@@ -16,7 +16,7 @@ import { EncryptService } from '../utils';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: 0, algorithm: 'HS256' }, // Sem expiração, ex 1 hora => '1h'
+        signOptions: { algorithm: 'HS256' }, // Sem expiração, quando adicionar refresh token, adicionar "expiresIn: '12h' em "signOptions",
       }),
     }),
   ],
