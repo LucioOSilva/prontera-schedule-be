@@ -49,7 +49,7 @@ export class AuthService {
     }
 
     const userData = await this.userService.findByEmail(authLogin.email);
-    const payload = { sub: userData._id };
+    const payload = { userData };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
