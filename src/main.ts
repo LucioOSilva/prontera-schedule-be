@@ -8,6 +8,13 @@ import {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.enableCors({
+    origin: '*', // Permitir requisições de qualquer origem
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos HTTP permitidos
+    allowedHeaders: 'Content-Type, Authorization', // Cabeçalhos permitidos
+  });
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // Remove propriedades não definidas no DTO
