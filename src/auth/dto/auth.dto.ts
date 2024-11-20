@@ -10,4 +10,8 @@ export class AuthDto {
   @IsNotEmpty()
   @MinLength(6)
   password: string;
+
+  @IsString()
+  @MinLength(3)
+  tenantId: string;
 }

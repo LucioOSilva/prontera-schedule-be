@@ -15,16 +15,18 @@ export class AuthService {
   private async validateAuthUser(
     email: string,
     password: string,
+    tenantId: string,
   ): Promise<boolean> {
     const query = { email };
-    const returnFields = { password: 1 };
+    const returnFields = { tenantId: 1, password: 1 };
     const user = await this.userService.findOne(query, returnFields);
     if (!user) return false;
     const isValidPassword = this.encryptService.checkEncrypt(
       password,
       user.password,
     );
-    return user && isValidPassword;
+    const isValidTenant = user.tenantId === tenantId;
+    return user && isValidPassword && isValidTenant;
   }
 
   async verifyToken(token: string): Promise<any> {
@@ -43,6 +45,7 @@ export class AuthService {
     const isUserAuthentic = await this.validateAuthUser(
       authLogin.email,
       authLogin.password,
+      authLogin.tenantId,
     );
     if (!isUserAuthentic) {
       throw new UnauthorizedException('Invalid credentials');
