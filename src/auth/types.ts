@@ -1,4 +1,4 @@
-export type userTokenPayload = {
+export type UserTokenPayload = {
   id: string;
   email: string;
   role: string;
