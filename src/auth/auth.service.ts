@@ -52,9 +52,14 @@ export class AuthService {
     }
 
     const userData = await this.userService.findByEmail(authLogin.email);
-    const payload = { userData };
+    const userPayload = {
+      id: userData._id,
+      email: userData.email,
+      role: userData.role,
+      tenantId: userData.tenantId,
+    };
     return {
-      token: await this.jwtService.signAsync(payload),
+      token: await this.jwtService.signAsync(userPayload),
     };
   }
 }
