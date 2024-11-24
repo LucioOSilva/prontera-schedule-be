@@ -7,7 +7,7 @@ import { EncryptService } from '../utils';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]), // Registra o schema
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
   providers: [UserService, EncryptService],
   controllers: [UserController],
