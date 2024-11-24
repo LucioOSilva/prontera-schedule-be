@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { EncryptService } from '../utils';
 import { AuthDto } from './dto/auth.dto';
+import { userTokenPayload } from './types';
 
 @Injectable()
 export class AuthService {
@@ -52,8 +53,8 @@ export class AuthService {
     }
 
     const userData = await this.userService.findByEmail(authLogin.email);
-    const userPayload = {
-      id: userData._id,
+    const userPayload: userTokenPayload = {
+      id: userData._id.toString(),
       email: userData.email,
       role: userData.role,
       tenantId: userData.tenantId,
