@@ -7,7 +7,7 @@ import {
   HttpException,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
 import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
 import { User } from '../schemas/user.schema';
@@ -16,7 +16,7 @@ import { User } from '../schemas/user.schema';
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RolesGuard)
   @Post('/create')
   async createUser(@Body() userData: UserDto): Promise<User> {
     const user = await this.userService.createUser(userData);
@@ -24,7 +24,7 @@ export class UserController {
     return user;
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RolesGuard)
   @Get('/by-email/:email')
   async getUserByEmail(@Param('email') email: string): Promise<any> {
     const user = await this.userService.findByEmail(email);

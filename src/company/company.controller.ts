@@ -12,7 +12,7 @@ import {
 import { CompanyService } from './company.service';
 import { Company } from '../schemas/company.schema';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from 'src/auth/decorators/Roles';
+import { Roles } from '../auth/decorators/Roles';
 
 @Controller('api/company')
 export class CompanyController {
