@@ -15,12 +15,7 @@ export class CompanyService extends EntityService<CompanyDocument> {
     super(companyModel);
   }
 
-  async createCompany(token: string, data: Partial<Company>): Promise<CompanyDocument> {
-    const isAbleToCreate = await this.authService.hasRolePermission(token, 'admin');
-    if (!isAbleToCreate) {
-      throw new HttpException('Not allowed', HttpStatus.FORBIDDEN);
-    }
-
+  async createCompany(data: Partial<Company>): Promise<CompanyDocument> {
     return this.companyModel.create(data);
   }
 

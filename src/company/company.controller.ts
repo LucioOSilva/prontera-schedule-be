@@ -11,19 +11,22 @@ import {
 } from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { Company } from '../schemas/company.schema';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from 'src/auth/decorators/Roles';
 
 @Controller('api/company')
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @Roles('admin1', 'client1')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Post('/create')
   async create(
     @Headers() { authorization }: any,
     @Body() data: Partial<Company>,
   ): Promise<Company> {
-    return this.companyService.createCompany(authorization, data);
+    return this.companyService.createCompany(data);
   }
 
   @UseGuards(JwtAuthGuard)
