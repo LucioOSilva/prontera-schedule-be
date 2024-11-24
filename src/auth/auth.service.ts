@@ -53,9 +53,8 @@ export class AuthService {
     }
 
     const userData = await this.userService.findByEmail(authLogin.email);
-
     return {
-      token: await this.jwtService.signAsync(userData),
+      token: await this.jwtService.signAsync(userData.toJSON()),
     };
   }
 }
