@@ -29,7 +29,7 @@ export class CompanyController {
     return this.companyService.createCompany(data);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RolesGuard)
   @Get()
   async findAll(): Promise<Company[]> {
     return this.companyService.findAll();
@@ -47,7 +47,7 @@ export class CompanyController {
     return this.companyService.findById(id);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RolesGuard)
   @Put(':id')
   async update(
     @Param('id') id: string,
@@ -56,7 +56,7 @@ export class CompanyController {
     return this.companyService.update(id, data);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RolesGuard)
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<Company | null> {
     return this.companyService.delete(id);

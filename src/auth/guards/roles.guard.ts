@@ -34,18 +34,15 @@ export class RolesGuard implements CanActivate {
     }
 
     const token = authorizationHeader.split(' ')[1]; // Remove "Bearer"
-    try {
-      const { decoded } = await this.authService.verifyToken(token);
-      const userRole: string = decoded?.role;
 
-      if (!requiredRoles?.includes(userRole)) {
-        throw new ForbiddenException('Invalid Access or Permissions Role');
-      }
-      // TODO: fazer o decrypto do name do user e inserir na request
-      request.user = decoded;
-      return true;
-    } catch (error) {
-      throw new UnauthorizedException('Invalid or missing token');
+    const { decoded } = await this.authService.verifyToken(token);
+    const userRole: string = decoded?.role;
+
+    if (!requiredRoles?.includes(userRole)) {
+      throw new ForbiddenException('Invalid Access or Permissions Role');
     }
+    // TODO: fazer o decrypto do name do user e inserir na request
+    request.user = decoded;
+    return true;
   }
 }
