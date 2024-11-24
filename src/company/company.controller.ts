@@ -7,6 +7,7 @@ import {
   Body,
   Param,
   UseGuards,
+  Headers,
 } from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { Company } from '../schemas/company.schema';
@@ -18,8 +19,11 @@ export class CompanyController {
 
   @UseGuards(JwtAuthGuard)
   @Post('/create')
-  async create(@Body() data: Partial<Company>): Promise<Company> {
-    return this.companyService.create(data);
+  async create(
+    @Headers() { authorization }: any,
+    @Body() data: Partial<Company>,
+  ): Promise<Company> {
+    return this.companyService.createCompany(authorization, data);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -40,6 +44,7 @@ export class CompanyController {
     return this.companyService.findById(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   async update(
     @Param('id') id: string,
@@ -48,6 +53,7 @@ export class CompanyController {
     return this.companyService.update(id, data);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<Company | null> {
     return this.companyService.delete(id);
