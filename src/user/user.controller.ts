@@ -7,7 +7,7 @@ import {
   HttpException,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
 import { User } from '../schemas/user.schema';

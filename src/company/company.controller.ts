@@ -11,8 +11,8 @@ import {
 } from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { Company } from '../schemas/company.schema';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { RolesGuard } from '../auth/roles.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/Roles';
 
 @Controller('api/company')
