@@ -38,9 +38,6 @@ export class RolesGuard implements CanActivate {
       const { decoded } = await this.authService.verifyToken(token);
       const userRole: string = decoded?.role;
 
-      const dd = requiredRoles?.includes(userRole);
-      console.log('dd', dd);
-
       if (!requiredRoles?.includes(userRole)) {
         throw new ForbiddenException('Invalid Access or Permissions Role');
       }

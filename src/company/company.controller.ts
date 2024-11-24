@@ -19,8 +19,8 @@ import { Roles } from 'src/auth/decorators/Roles';
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
 
-  @Roles('admin1', 'client1')
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin', 'client')
+  @UseGuards(RolesGuard)
   @Post('/create')
   async create(
     @Headers() { authorization }: any,
