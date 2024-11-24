@@ -11,7 +11,6 @@ import {
 } from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { Company } from '../schemas/company.schema';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/Roles';
 
@@ -48,7 +47,7 @@ export class CompanyController {
   }
 
   @UseGuards(RolesGuard)
-  @Put(':id')
+  @Put('/:id')
   async update(
     @Param('id') id: string,
     @Body() data: Partial<Company>,
@@ -57,7 +56,7 @@ export class CompanyController {
   }
 
   @UseGuards(RolesGuard)
-  @Delete(':id')
+  @Delete('/:id')
   async delete(@Param('id') id: string): Promise<Company | null> {
     return this.companyService.delete(id);
   }
