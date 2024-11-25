@@ -30,14 +30,14 @@ export class RolesGuard implements CanActivate {
       throw new UnauthorizedException('Token not provided');
     }
 
-    if (!requiredRoles || requiredRoles.length === 0) {
-      return true; // Se não houver roles requeridas, a rota é acessível
-    }
-
     const token = authorizationHeader.split(' ')[1]; // Remove "Bearer"
 
     const { decoded } = await this.authService.verifyToken(token);
     const userRole: string = decoded?.role;
+
+    if (!requiredRoles || requiredRoles.length === 0) {
+      return true; // Se não houver roles requeridas, a rota é acessível
+    }
 
     if (!requiredRoles?.includes(userRole)) {
       throw new ForbiddenException('Invalid Access or Permissions Role');

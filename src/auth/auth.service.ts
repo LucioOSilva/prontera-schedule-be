@@ -30,7 +30,7 @@ export class AuthService {
     return user && isValidPassword && isValidTenant;
   }
 
-  async verifyToken(token: string): Promise<any> {
+  async verifyToken(token: string | undefined | null): Promise<any> {
     if (!token) {
       throw new UnauthorizedException('Token not provided');
     }
