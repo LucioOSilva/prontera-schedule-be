@@ -15,7 +15,7 @@ export class CompanyService extends EntityService<CompanyDocument> {
     super(companyModel);
   }
 
-  async createCompany(data: Partial<Company>): Promise<CompanyDocument> {
+  async createCompany(data: Company): Promise<CompanyDocument> {
     return this.companyModel.create(data);
   }
 

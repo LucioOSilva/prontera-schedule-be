@@ -2,7 +2,7 @@ import {
   Controller,
   Get,
   Post,
-  Put,
+  Patch,
   Delete,
   Body,
   Param,
@@ -21,15 +21,12 @@ export class CompanyController {
   @Roles('admin', 'client')
   @UseGuards(RolesGuard)
   @Post('/create')
-  async create(
-    @Headers() { authorization }: any,
-    @Body() data: Partial<Company>,
-  ): Promise<Company> {
-    return this.companyService.createCompany(data);
+  async create(@Body() data: Company): Promise<Company> {
+    return this.companyService.create(data);
   }
 
   @UseGuards(RolesGuard)
-  @Get()
+  @Get('/')
   async findAll(): Promise<Company[]> {
     return this.companyService.findAll();
   }
@@ -41,13 +38,14 @@ export class CompanyController {
     return this.companyService.findByTentantId(tenantId);
   }
 
+  @UseGuards(RolesGuard)
   @Get('/:id')
   async findById(@Param('id') id: string): Promise<Company | null> {
     return this.companyService.findById(id);
   }
 
   @UseGuards(RolesGuard)
-  @Put('/:id')
+  @Patch('/:id')
   async update(
     @Param('id') id: string,
     @Body() data: Partial<Company>,

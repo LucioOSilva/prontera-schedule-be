@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthService } from '../auth.service';
+import { ExtractJwt, Strategy } from 'passport-jwt';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -22,15 +23,15 @@ export class RolesGuard implements CanActivate {
       context.getHandler(),
     );
 
-    if (!requiredRoles || requiredRoles.length === 0) {
-      return true; // Se não houver roles requeridas, a rota é acessível
-    }
-
     const request = context.switchToHttp().getRequest();
     const authorizationHeader = request.headers.authorization;
 
     if (!authorizationHeader) {
       throw new UnauthorizedException('Token not provided');
+    }
+
+    if (!requiredRoles || requiredRoles.length === 0) {
+      return true; // Se não houver roles requeridas, a rota é acessível
     }
 
     const token = authorizationHeader.split(' ')[1]; // Remove "Bearer"
