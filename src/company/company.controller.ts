@@ -18,13 +18,14 @@ import { Roles } from '../auth/decorators/Roles';
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
 
-  @Roles('admin', 'client')
+  @Roles('admin')
   @UseGuards(RolesGuard)
   @Post('/create')
   async create(@Body() data: Company): Promise<Company> {
     return this.companyService.create(data);
   }
 
+  @Roles('admin')
   @UseGuards(RolesGuard)
   @Get('/')
   async findAll(): Promise<Company[]> {
@@ -44,6 +45,7 @@ export class CompanyController {
     return this.companyService.findById(id);
   }
 
+  @Roles('admin')
   @UseGuards(RolesGuard)
   @Patch('/:id')
   async update(
@@ -53,6 +55,7 @@ export class CompanyController {
     return this.companyService.update(id, data);
   }
 
+  @Roles('admin')
   @UseGuards(RolesGuard)
   @Delete('/:id')
   async delete(@Param('id') id: string): Promise<Company | null> {

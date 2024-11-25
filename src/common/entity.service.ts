@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Model, Document } from 'mongoose';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class EntityService<T extends Document> {
@@ -23,10 +24,12 @@ export class EntityService<T extends Document> {
   }
 
   async update(id: string, entityDTO: Partial<T>): Promise<T | null> {
-    return this.model.findByIdAndUpdate(id, entityDTO, { new: true }).exec();
+    return this.model
+      .findByIdAndUpdate(new ObjectId(id), entityDTO, { new: true })
+      .exec();
   }
 
   async delete(id: string): Promise<T | null> {
-    return this.model.findByIdAndDelete(id).exec();
+    return this.model.findByIdAndDelete(new ObjectId(id)).exec();
   }
 }
