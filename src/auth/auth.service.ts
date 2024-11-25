@@ -42,20 +42,6 @@ export class AuthService {
     }
   }
 
-  async hasRolePermission(token: string, role: string): Promise<boolean> {
-    const decoded = await this.jwtService.verifyAsync(token.split(' ')[1]);
-    if (!decoded?.role) {
-      throw new UnauthorizedException('Invalid roles in token');
-    }
-
-    const hasPermission = decoded.role.includes(role);
-    if (!hasPermission) {
-      throw new UnauthorizedException('Unauthorized or invalid permission');
-    }
-
-    return true;
-  }
-
   async login(authLogin: AuthDto): Promise<Token> {
     const isUserAuthentic = await this.validateAuthUser(
       authLogin.email,
