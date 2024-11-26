@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty } from 'class-validator';
 
-export class CreateMenuItemDto {
+export class MenuItemDto {
   @IsString()
   @IsNotEmpty()
   label: string;

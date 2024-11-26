@@ -13,6 +13,7 @@ import { CompanyService } from './company.service';
 import { Company } from '../schemas/company.schema';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/Roles';
+import { CompanyDto } from './dto/company.dto';
 
 @Controller('api/company')
 export class CompanyController {
@@ -21,7 +22,7 @@ export class CompanyController {
   @Roles('admin')
   @UseGuards(RolesGuard)
   @Post('/create')
-  async create(@Body() data: Company): Promise<Company> {
+  async create(@Body() data: CompanyDto): Promise<Company> {
     return this.companyService.create(data);
   }
 

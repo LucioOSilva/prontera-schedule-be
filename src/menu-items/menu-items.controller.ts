@@ -13,7 +13,7 @@ import { MenuItem } from '../schemas/menu-items.schema';
 import { Roles } from 'src/auth/decorators/Roles';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { request } from 'express';
-import { CreateMenuItemDto } from './dto/menu-item.dto';
+import { MenuItemDto } from './dto/menu-item.dto';
 
 @Controller('api/menu-items')
 export class MenuItemsController {
@@ -30,7 +30,7 @@ export class MenuItemsController {
   @Roles('admin')
   @UseGuards(RolesGuard)
   @Post()
-  async create(@Body() data: CreateMenuItemDto): Promise<MenuItem> {
+  async create(@Body() data: MenuItemDto): Promise<MenuItem> {
     return this.menuItemsService.create(data);
   }
 
