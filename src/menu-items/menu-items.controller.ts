@@ -12,6 +12,8 @@ import { MenuItemsService } from './menu-items.service';
 import { MenuItem } from '../schemas/menu-items.schema';
 import { Roles } from 'src/auth/decorators/Roles';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { request } from 'express';
+import { CreateMenuItemDto } from './dto/menu-item.dto';
 
 @Controller('api/menu-items')
 export class MenuItemsController {
@@ -20,14 +22,16 @@ export class MenuItemsController {
   @UseGuards(RolesGuard)
   @Get()
   async findById(@Param('id') id: string): Promise<MenuItem | null> {
+    const user = request.user;
+    console.log(user);
     return this.menuItemsService.findById(id);
   }
 
   @Roles('admin')
   @UseGuards(RolesGuard)
   @Post()
-  async create(@Body() menuItemDto: MenuItem): Promise<MenuItem> {
-    return this.menuItemsService.create(menuItemDto);
+  async create(@Body() data: CreateMenuItemDto): Promise<MenuItem> {
+    return this.menuItemsService.create(data);
   }
 
   @Roles('admin')

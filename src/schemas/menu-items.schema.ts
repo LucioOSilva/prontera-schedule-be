@@ -1,8 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
+
+export type MenuItemDocument = HydratedDocument<MenuItem>;
 
 @Schema()
-export class MenuItem extends Document {
+export class MenuItem {
   @Prop({ required: true })
   label: string;
 
@@ -11,9 +13,6 @@ export class MenuItem extends Document {
 
   @Prop({ default: true })
   to: string;
-
-  @Prop({ default: Date.now })
-  createdAt: Date;
 }
 
 export const MenuItemSchema = SchemaFactory.createForClass(MenuItem);
