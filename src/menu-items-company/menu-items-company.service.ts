@@ -29,13 +29,12 @@ export class MenuItemsCompanyService extends EntityService<MenuItemsCompanyDocum
     return this.create(menuItemsCompanyDto);
   }
 
-  async findMenuItemsCompanyByTenantAndRole(user: any): Promise<any> {
-    // criar a lógica para retornar o menu de acordo com o role e tenant
+  async findMenuItemsCompanyByTenantAndRole(
+    user: any,
+  ): Promise<MenuItemsCompanyType> {
     const tenantId = user.tenantId;
     const role = user.role;
-    console.log(tenantId, role);
     const query = { tenantId, role };
-    const user1 = await this.findAll(query);
-    return user1;
+    return await this.findOne(query);
   }
 }
