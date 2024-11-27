@@ -8,16 +8,20 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { Reflector } from '@nestjs/core';
 import { AuthService } from '../auth.service';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
   constructor(
     private readonly reflector: Reflector,
-    private readonly authService: AuthService,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {
-    super(reflector, authService);
-    //super();
+    super(reflector, jwtService);
   }
+
+  private readonly JWT_SECRET = this.configService.get<string>('JWT_SECRET');
 
   async canActivate(context: ExecutionContext) {
     const requiredRoles = this.reflector.get<string[]>(
@@ -34,7 +38,9 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
     const token = authorizationHeader.split(' ')[1]; // Remove "Bearer"
 
-    const { decoded } = await this.authService.verifyToken(token);
+    const decoded = await this.jwtService.verifyAsync(token, {
+      secret: this.JWT_SECRET,
+    });
     const userRole: string = decoded?.role;
 
     request.user = decoded;

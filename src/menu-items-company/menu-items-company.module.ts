@@ -7,7 +7,7 @@ import {
   MenuItemsCompanySchema,
 } from '../schemas/menu-items-company.schema';
 import { MenuItem, MenuItemSchema } from '../schemas/menu-items.schema';
-import { AuthModule } from 'src/auth/auth.module';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -15,9 +15,8 @@ import { AuthModule } from 'src/auth/auth.module';
       { name: MenuItemsCompany.name, schema: MenuItemsCompanySchema },
       { name: MenuItem.name, schema: MenuItemSchema },
     ]),
-    AuthModule,
   ],
-  providers: [MenuItemsCompanyService],
+  providers: [MenuItemsCompanyService, JwtService],
   controllers: [MenuItemsCompanyController],
 })
 export class MenuItemsCompanyModule {}

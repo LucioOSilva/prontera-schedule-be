@@ -12,7 +12,6 @@ import { MenuItemsCompanyDto } from './dto/menu-items-company.dto';
 import { Request } from '@nestjs/common';
 import { User } from 'src/auth/decorators/User';
 import { Roles } from 'src/auth/decorators/Roles';
-import { RolesGuard } from '../auth/guards/roles.guard';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('api/menu-items-company')
@@ -31,8 +30,6 @@ export class MenuItemsCompanyController {
     return this.menuItemsCompanyService.findById(id);
   }
 
-  @Roles('client')
-  // @UseGuards(RolesGuard)
   @UseGuards(JwtAuthGuard)
   @Get('/by-tenant-role')
   async findByTenantAndRole(@User() user: any) {
