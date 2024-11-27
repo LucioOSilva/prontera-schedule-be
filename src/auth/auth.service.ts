@@ -52,7 +52,10 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const userData = await this.userService.findByEmail(authLogin.email);
+    const userData = await this.userService.findByEmail(
+      authLogin.tenantId,
+      authLogin.email,
+    );
     return {
       token: await this.jwtService.signAsync(userData.toJSON()),
     };

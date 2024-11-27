@@ -5,6 +5,7 @@ import { UserDto } from './dto/user.dto';
 import { EncryptService } from '../utils';
 import { EntityService } from '../common/entity.service'; // Importando EntityService
 import { Model } from 'mongoose';
+import { LoggedUser } from 'src/auth/types';
 
 @Injectable()
 export class UserService extends EntityService<UserDocument> {
@@ -15,12 +16,15 @@ export class UserService extends EntityService<UserDocument> {
     super(userModel);
   }
 
-  async findByEmail(email: string): Promise<UserDocument | null> {
-    return this.findOne({ email });
+  async findByEmail(
+    tenantId: string,
+    email: string,
+  ): Promise<UserDocument | null> {
+    return this.findOne({ tenantId, email });
   }
 
   public async createUser(userDTO: UserDto): Promise<UserDocument | null> {
-    const userExists = await this.findByEmail(userDTO.email);
+    const userExists = await this.findByEmail(userDTO.tenantId, userDTO.email);
     if (!userExists) {
       const hashedPassword = this.encryptService.encrypt(userDTO.password);
       const user = await this.create({ ...userDTO, password: hashedPassword });
