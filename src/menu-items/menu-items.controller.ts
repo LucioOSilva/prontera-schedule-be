@@ -14,6 +14,8 @@ import { Roles } from 'src/auth/decorators/Roles';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { request } from 'express';
 import { MenuItemDto } from './dto/menu-item.dto';
+import { User } from 'src/auth/decorators/User';
+import { LoggedUser } from 'src/auth/types';
 
 @Controller('api/menu-items')
 export class MenuItemsController {
@@ -22,9 +24,13 @@ export class MenuItemsController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async findById(@Param('id') id: string): Promise<MenuItem | null> {
-    const user = request.user;
-    console.log(user);
     return this.menuItemsService.findById(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/all')
+  async findAll(): Promise<MenuItem[] | null> {
+    return this.menuItemsService.findAll();
   }
 
   @Roles('admin')

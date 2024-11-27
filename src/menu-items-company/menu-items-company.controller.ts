@@ -21,6 +21,7 @@ export class MenuItemsCompanyController {
     private readonly menuItemsCompanyService: MenuItemsCompanyService,
   ) {}
 
+  @Roles('admin')
   @UseGuards(JwtAuthGuard)
   @Post()
   createMenuItemsCompany(
