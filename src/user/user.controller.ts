@@ -34,7 +34,7 @@ export class UserController {
     @Param('email') email: string,
     @UserDecorator() userReq: User,
   ): Promise<any> {
-    const user = await this.userService.findByUserByTenantAndEmail(
+    const user = await this.userService.findByTenantAndEmail(
       userReq.tenantId,
       email,
     );

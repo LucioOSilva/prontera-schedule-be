@@ -16,7 +16,7 @@ export class UserService extends EntityService<UserDocument> {
     super(userModel);
   }
 
-  async findByUserByTenantAndEmail(
+  async findByTenantAndEmail(
     tenantId: string,
     email: string,
   ): Promise<UserDocument | null> {
@@ -24,7 +24,7 @@ export class UserService extends EntityService<UserDocument> {
   }
 
   public async createUser(userDTO: UserDto): Promise<UserDocument | null> {
-    const userExists = await this.findByUserByTenantAndEmail(
+    const userExists = await this.findByTenantAndEmail(
       userDTO.tenantId,
       userDTO.email,
     );

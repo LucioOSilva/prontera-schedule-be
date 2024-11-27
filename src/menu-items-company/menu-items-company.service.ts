@@ -19,7 +19,10 @@ export class MenuItemsCompanyService extends EntityService<MenuItemsCompanyDocum
 
   async findMenuItemsCompanyByTenantAndRole(user: any): Promise<any> {
     // criar a lógica para retornar o menu de acordo com o role e tenant
-
-    return user;
+    const tenantId = user.tenantId;
+    const role = user.role;
+    const query = { tenantId, role };
+    const user1 = await this.findOne(query);
+    return user1;
   }
 }

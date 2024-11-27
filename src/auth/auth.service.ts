@@ -52,7 +52,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const userData = await this.userService.findByUserByTenantAndEmail(
+    const userData = await this.userService.findByTenantAndEmail(
       authLogin.tenantId,
       authLogin.email,
     );
