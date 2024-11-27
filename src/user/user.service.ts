@@ -16,7 +16,7 @@ export class UserService extends EntityService<UserDocument> {
     super(userModel);
   }
 
-  async findByEmail(
+  async findByUserByTenantAndEmail(
     tenantId: string,
     email: string,
   ): Promise<UserDocument | null> {
@@ -24,7 +24,10 @@ export class UserService extends EntityService<UserDocument> {
   }
 
   public async createUser(userDTO: UserDto): Promise<UserDocument | null> {
-    const userExists = await this.findByEmail(userDTO.tenantId, userDTO.email);
+    const userExists = await this.findByUserByTenantAndEmail(
+      userDTO.tenantId,
+      userDTO.email,
+    );
     if (!userExists) {
       const hashedPassword = this.encryptService.encrypt(userDTO.password);
       const user = await this.create({ ...userDTO, password: hashedPassword });

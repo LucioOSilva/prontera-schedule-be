@@ -34,7 +34,10 @@ export class UserController {
     @Param('email') email: string,
     @UserDecorator() userReq: User,
   ): Promise<any> {
-    const user = await this.userService.findByEmail(userReq.tenantId, email);
+    const user = await this.userService.findByUserByTenantAndEmail(
+      userReq.tenantId,
+      email,
+    );
     if (!user) throw new HttpException('User not found', 404);
     return user;
   }
