@@ -8,6 +8,7 @@ import { validationSchema } from './config/schema';
 import { UserModule } from './user/user.module';
 import { CompanyModule } from './company/company.module';
 import { MenuItemsModule } from './menu-items/menu-items.module';
+import { MenuItemsCompanyModule } from './menu-items-company/menu-items-company.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { MenuItemsModule } from './menu-items/menu-items.module';
     UserModule,
     CompanyModule,
     MenuItemsModule,
+    MenuItemsCompanyModule,
   ],
   controllers: [AppController],
   providers: [AppService],
