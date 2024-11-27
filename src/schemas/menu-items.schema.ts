@@ -3,7 +3,7 @@ import { HydratedDocument } from 'mongoose';
 
 export type MenuItemDocument = HydratedDocument<MenuItem>;
 
-@Schema()
+@Schema({ timestamps: true })
 export class MenuItem {
   @Prop({ required: true })
   label: string;

@@ -1,12 +1,14 @@
 // src/menu-items-company/dto/create-menu-items-company.dto.ts
-import { IsArray, IsString } from 'class-validator';
+import { IsOptional, IsArray, IsString } from 'class-validator';
 
 export class MenuItemsCompanyDto {
+  @IsOptional()
   @IsString()
-  tenantId: string;
+  tenantId?: string;
 
+  @IsOptional()
   @IsString()
-  role: string;
+  role?: string;
 
   @IsArray()
   @IsString({ each: true })

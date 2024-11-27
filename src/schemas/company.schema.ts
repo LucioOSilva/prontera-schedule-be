@@ -26,7 +26,7 @@ export class ThemeColors {
 
 export const ThemeColorsSchema = SchemaFactory.createForClass(ThemeColors);
 
-@Schema()
+@Schema({ timestamps: true })
 export class Company {
   @Prop({ required: true })
   name: string;
