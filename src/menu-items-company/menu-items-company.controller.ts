@@ -32,9 +32,10 @@ export class MenuItemsCompanyController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/by-tenant-role')
-  async findByTenantAndRole(@User() user: any) {
-    console.log('userX', user);
-    return 'RODOU';
+  async findMenuItemsCompanyByTenantAndRole(@User() user: any) {
+    return this.menuItemsCompanyService.findMenuItemsCompanyByTenantAndRole(
+      user,
+    );
   }
 
   // @Patch(':id')

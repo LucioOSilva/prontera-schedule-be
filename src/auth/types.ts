@@ -1,7 +1,3 @@
-export type Token = {
-  token: string;
-};
-
 export type LoggedUser = {
   id: string;
   name: string;
@@ -9,4 +5,13 @@ export type LoggedUser = {
   role: string;
   tenantId: string;
   createdAt: Date;
+};
+
+export type Token = {
+  token: string;
+};
+
+export type TokenValid = {
+  isValid: boolean;
+  decoded: LoggedUser;
 };

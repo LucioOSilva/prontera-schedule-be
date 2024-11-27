@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { EncryptService } from '../utils';
 import { AuthDto } from './dto/auth.dto';
-import { LoggedUser, Token } from './types';
+import { LoggedUser, Token, TokenValid } from './types';
 
 @Injectable()
 export class AuthService {
@@ -30,13 +30,13 @@ export class AuthService {
     return user && isValidPassword && isValidTenant;
   }
 
-  async verifyToken(token: string | undefined | null): Promise<any> {
+  async verifyToken(token: string | undefined | null): Promise<TokenValid> {
     if (!token) {
       throw new UnauthorizedException('Token not provided');
     }
     try {
       const decoded = await this.jwtService.verifyAsync(token);
-      return { valid: true, decoded };
+      return { isValid: true, decoded };
     } catch (error) {
       throw new UnauthorizedException('Invalid token');
     }
