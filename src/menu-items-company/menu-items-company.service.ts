@@ -9,6 +9,7 @@ import { EntityService } from 'src/common/entity.service';
 import { User } from 'src/auth/decorators/User';
 import { LoggedUser } from 'src/auth/types';
 import { MenuItemsCompanyDto } from './dto/menu-items-company.dto';
+import { MenuItemsCompany as MenuItemsCompanyType } from './types';
 
 @Injectable()
 export class MenuItemsCompanyService extends EntityService<MenuItemsCompanyDocument> {
@@ -22,7 +23,7 @@ export class MenuItemsCompanyService extends EntityService<MenuItemsCompanyDocum
   async createMenuItemsCompany(
     user: LoggedUser,
     menuItemsCompanyDto: MenuItemsCompanyDto,
-  ): Promise<any> {
+  ): Promise<MenuItemsCompanyType> {
     const { tenantId } = user;
     menuItemsCompanyDto.tenantId = tenantId;
     return this.create(menuItemsCompanyDto);
