@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { Company } from '../schemas/company.schema';
-import { RolesGuard } from '../auth/guards/roles.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Roles } from '../auth/decorators/Roles';
 import { CompanyDto } from './dto/company.dto';
 
@@ -20,14 +20,14 @@ export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
 
   @Roles('admin')
-  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
   @Post('/create')
   async create(@Body() data: CompanyDto): Promise<Company> {
     return this.companyService.create(data);
   }
 
   @Roles('admin')
-  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('/')
   async findAll(): Promise<Company[]> {
     return this.companyService.findAll();
@@ -40,14 +40,14 @@ export class CompanyController {
     return this.companyService.findByTentantId(tenantId);
   }
 
-  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('/:id')
   async findById(@Param('id') id: string): Promise<Company | null> {
     return this.companyService.findById(id);
   }
 
   @Roles('admin')
-  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
   @Patch('/:id')
   async update(
     @Param('id') id: string,
@@ -57,7 +57,7 @@ export class CompanyController {
   }
 
   @Roles('admin')
-  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete('/:id')
   async delete(@Param('id') id: string): Promise<Company | null> {
     return this.companyService.delete(id);

@@ -16,7 +16,7 @@ import { JwtService } from '@nestjs/jwt';
       { name: MenuItem.name, schema: MenuItemSchema },
     ]),
   ],
-  providers: [MenuItemsCompanyService, JwtService],
   controllers: [MenuItemsCompanyController],
+  providers: [MenuItemsCompanyService, JwtService],
 })
 export class MenuItemsCompanyModule {}

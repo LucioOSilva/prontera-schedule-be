@@ -11,7 +11,7 @@ import {
 import { MenuItemsService } from './menu-items.service';
 import { MenuItem } from '../schemas/menu-items.schema';
 import { Roles } from 'src/auth/decorators/Roles';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { request } from 'express';
 import { MenuItemDto } from './dto/menu-item.dto';
 
@@ -19,7 +19,7 @@ import { MenuItemDto } from './dto/menu-item.dto';
 export class MenuItemsController {
   constructor(private readonly menuItemsService: MenuItemsService) {}
 
-  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findById(@Param('id') id: string): Promise<MenuItem | null> {
     const user = request.user;
@@ -28,14 +28,14 @@ export class MenuItemsController {
   }
 
   @Roles('admin')
-  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() data: MenuItemDto): Promise<MenuItem> {
     return this.menuItemsService.create(data);
   }
 
   @Roles('admin')
-  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   async update(
     @Param('id') id: string,
@@ -45,7 +45,7 @@ export class MenuItemsController {
   }
 
   @Roles('admin')
-  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<MenuItem | null> {
     return this.menuItemsService.delete(id);

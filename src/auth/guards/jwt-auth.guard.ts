@@ -7,7 +7,6 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Reflector } from '@nestjs/core';
-import { AuthService } from '../auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
@@ -18,7 +17,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {
-    super(reflector, jwtService);
+    super();
   }
 
   private readonly JWT_SECRET = this.configService.get<string>('JWT_SECRET');
