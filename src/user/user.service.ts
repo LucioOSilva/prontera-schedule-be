@@ -23,6 +23,13 @@ export class UserService extends EntityService<UserDocument> {
     return this.findOne({ tenantId, email });
   }
 
+  async findByTenantAndId(
+    tenantId: string,
+    id: string,
+  ): Promise<UserDocument | null> {
+    return this.findOne({ tenantId, _id: id });
+  }
+
   public async createUser(userDTO: UserDto): Promise<UserDocument | null> {
     const userExists = await this.findByTenantAndEmail(
       userDTO.tenantId,

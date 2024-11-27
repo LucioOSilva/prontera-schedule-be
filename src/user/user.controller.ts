@@ -41,4 +41,16 @@ export class UserController {
     if (!user) throw new HttpException('User not found', 404);
     return user;
   }
+
+  @Roles('admin', 'client')
+  @UseGuards(JwtAuthGuard)
+  @Get('/by-id/:id')
+  async getUserById(
+    @Param('id') id: string,
+    @UserDecorator() userReq: User,
+  ): Promise<any> {
+    const user = await this.userService.findByTenantAndId(userReq.tenantId, id);
+    if (!user) throw new HttpException('User not found', 404);
+    return user;
+  }
 }
