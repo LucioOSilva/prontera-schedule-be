@@ -23,9 +23,8 @@ export class MenuItemsCompanyService extends EntityService<MenuItemsCompanyDocum
     user: LoggedUser,
     menuItemsCompanyDto: MenuItemsCompanyDto,
   ): Promise<any> {
-    const { tenantId, role } = user;
+    const { tenantId } = user;
     menuItemsCompanyDto.tenantId = tenantId;
-    menuItemsCompanyDto.role = role;
     return this.create(menuItemsCompanyDto);
   }
 
