@@ -45,13 +45,14 @@ export class MenuItemsCompanyController {
     );
   }
 
-  // CRIAR METODO PARA CRIAR MENU DEFAULT PARA ADMIN
-
-  // @Patch(':id')
-  // update(
-  //   @Param('id') id: string,
-  //   @Body() updateMenuItemsCompanyDto: Partial<MenuItemsCompanyDto>,
-  // ) {
-  //   return this.menuItemsCompanyService.update(id, updateMenuItemsCompanyDto);
-  // }
+  @Roles('superAdmin')
+  @UseGuards(JwtAuthGuard)
+  @Post('/createAdminDefaultMenuItemsCompany/:tenantId')
+  createOrUpdateDefaultAdminMenuItemsCompany(
+    @Param('tenantId') tenantId: string,
+  ) {
+    return this.menuItemsCompanyService.createOrUpdateDefaultAdminMenuItemsCompany(
+      tenantId,
+    );
+  }
 }

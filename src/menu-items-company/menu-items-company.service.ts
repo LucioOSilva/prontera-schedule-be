@@ -28,6 +28,35 @@ export class MenuItemsCompanyService extends EntityService<MenuItemsCompanyDocum
     super(menuItemCompanyModel);
   }
 
+  async createOrUpdateDefaultAdminMenuItemsCompany(
+    tenantId: string,
+  ): Promise<MenuItemsCompanyType> {
+    const allMenuItemsIds = await this.menuItemModel.find();
+    const itemsMenuStringIds = allMenuItemsIds
+      .filter((item) => item.type === 'menu')
+      .map((item) => item._id.toString());
+    const itemsMenuConfigsStringIds = allMenuItemsIds
+      .filter((item) => item.type === 'config')
+      .map((item) => item._id.toString());
+    const existingMenuItemsCompany = await this.menuItemCompanyModel.find({
+      tenantId,
+      role: 'admin',
+    });
+    if (existingMenuItemsCompany.length > 0) {
+      const updateData = {
+        menu: itemsMenuStringIds,
+        menuConfigs: itemsMenuConfigsStringIds,
+      };
+      return this.update(existingMenuItemsCompany[0]._id, updateData);
+    }
+    return this.create({
+      tenantId,
+      role: 'admin',
+      menu: itemsMenuStringIds,
+      menuConfigs: itemsMenuConfigsStringIds,
+    });
+  }
+
   async createOrUpdateClientMenuItemsCompany(
     user: LoggedUser,
     menuItemsCompanyDto: MenuItemsCompanyDto,

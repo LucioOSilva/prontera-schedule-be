@@ -11,8 +11,11 @@ export class MenuItem {
   @Prop({ required: true })
   icon: string;
 
-  @Prop({ default: true })
+  @Prop({ default: '/' })
   to: string;
+
+  @Prop({ required: true, enum: ['menu', 'config'], default: 'menu' })
+  type: string;
 }
 
 export const MenuItemSchema = SchemaFactory.createForClass(MenuItem);
