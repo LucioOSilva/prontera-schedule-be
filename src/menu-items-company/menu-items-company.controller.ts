@@ -14,7 +14,7 @@ import { User } from 'src/auth/decorators/User';
 import { Roles } from 'src/auth/decorators/Roles';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { LoggedUser } from 'src/auth/types';
-import { MenuItemsCompany } from './types';
+import { MenuItemsCompany, MenuItemsCompanyResponse } from './types';
 
 @Controller('api/menu-items-company')
 export class MenuItemsCompanyController {
@@ -38,8 +38,8 @@ export class MenuItemsCompanyController {
   @UseGuards(JwtAuthGuard)
   @Get('/by-tenant-role')
   async findMenuItemsCompanyByTenantAndRole(
-    @User() user: any,
-  ): Promise<MenuItemsCompany> {
+    @User() user: LoggedUser,
+  ): Promise<MenuItemsCompanyResponse> {
     return this.menuItemsCompanyService.findMenuItemsCompanyByTenantAndRole(
       user,
     );

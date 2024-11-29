@@ -36,7 +36,9 @@ export class MenuItemsCompanyService extends EntityService<MenuItemsCompanyDocum
     return this.create(menuItemsCompanyDto);
   }
 
-  async findMenuItemsCompanyByTenantAndRole(user: any): Promise<any> {
+  async findMenuItemsCompanyByTenantAndRole(
+    user: any,
+  ): Promise<MenuItemsCompanyResponse> {
     const { tenantId, role } = user;
 
     // Executa o aggregation com lookup nas coleções de menus e menuConfigs
