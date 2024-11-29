@@ -33,14 +33,14 @@ export class MenuItemsController {
     return this.menuItemsService.findAll();
   }
 
-  @Roles('admin')
+  @Roles('superadmin')
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() data: MenuItemDto): Promise<MenuItem> {
     return this.menuItemsService.create(data);
   }
 
-  @Roles('admin')
+  @Roles('superadmin')
   @UseGuards(JwtAuthGuard)
   @Put(':id')
   async update(
@@ -50,7 +50,7 @@ export class MenuItemsController {
     return this.menuItemsService.update(id, menuItemDto);
   }
 
-  @Roles('admin')
+  @Roles('superadmin')
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<MenuItem | null> {
