@@ -45,7 +45,7 @@ export class MenuItemsCompanyController {
     );
   }
 
-  @Roles('superAdmin')
+  @Roles('superadmin')
   @UseGuards(JwtAuthGuard)
   @Post('/createAdminDefaultMenuItemsCompany/:tenantId')
   createOrUpdateDefaultAdminMenuItemsCompany(
