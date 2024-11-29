@@ -13,5 +13,6 @@ import { JwtService } from '@nestjs/jwt';
   ],
   controllers: [MenuItemsController],
   providers: [MenuItemsService, JwtService],
+  exports: [MenuItemsService, MongooseModule],
 })
 export class MenuItemsModule {}

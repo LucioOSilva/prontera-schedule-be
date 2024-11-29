@@ -8,6 +8,7 @@ import {
 } from '../schemas/menu-items-company.schema';
 import { MenuItem, MenuItemSchema } from '../schemas/menu-items.schema';
 import { JwtService } from '@nestjs/jwt';
+import { MenuItemsModule } from 'src/menu-items/menu-items.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { JwtService } from '@nestjs/jwt';
       { name: MenuItemsCompany.name, schema: MenuItemsCompanySchema },
       { name: MenuItem.name, schema: MenuItemSchema },
     ]),
+    MenuItemsModule,
   ],
   controllers: [MenuItemsCompanyController],
   providers: [MenuItemsCompanyService, JwtService],
