@@ -12,10 +12,10 @@ export class MenuItemsCompanyDto {
   @IsString()
   tenantId?: string;
 
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
   @IsIn(['admin', 'client', 'guest'])
-  role: 'admin' | 'client' | 'guest';
+  role?: 'admin' | 'client' | 'guest';
 
   @IsArray()
   @IsString({ each: true })

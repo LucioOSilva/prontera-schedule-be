@@ -23,9 +23,13 @@ export class EntityService<T extends Document> {
     return entity.save();
   }
 
-  async update(id: string, entityDTO: Partial<T>): Promise<T | null> {
+  async update(
+    id: string | ObjectId,
+    entityDTO: Partial<T>,
+  ): Promise<T | null> {
+    const idType = typeof id === 'string' ? new ObjectId(id) : id;
     return this.model
-      .findByIdAndUpdate(new ObjectId(id), entityDTO, { new: true })
+      .findByIdAndUpdate(idType, entityDTO, { new: true })
       .exec();
   }
 

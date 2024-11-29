@@ -25,11 +25,11 @@ export class MenuItemsCompanyController {
   @Roles('admin')
   @UseGuards(JwtAuthGuard)
   @Post()
-  createMenuItemsCompany(
+  createOrUpdateClientMenuItemsCompany(
     @User() user: LoggedUser,
     @Body() menuItemsCompanyDto: MenuItemsCompanyDto,
   ): Promise<MenuItemsCompany> {
-    return this.menuItemsCompanyService.createMenuItemsCompany(
+    return this.menuItemsCompanyService.createOrUpdateClientMenuItemsCompany(
       user,
       menuItemsCompanyDto,
     );

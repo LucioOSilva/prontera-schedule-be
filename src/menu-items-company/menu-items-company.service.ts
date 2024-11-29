@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { ObjectId } from 'mongodb';
 import { Model } from 'mongoose';
 import {
   MenuItemsCompany,
@@ -27,12 +28,39 @@ export class MenuItemsCompanyService extends EntityService<MenuItemsCompanyDocum
     super(menuItemCompanyModel);
   }
 
-  async createMenuItemsCompany(
+  async createOrUpdateClientMenuItemsCompany(
     user: LoggedUser,
     menuItemsCompanyDto: MenuItemsCompanyDto,
   ): Promise<MenuItemsCompanyType> {
     const { tenantId } = user;
     menuItemsCompanyDto.tenantId = tenantId;
+    menuItemsCompanyDto.role = 'client';
+    const menuItemsList = [
+      ...menuItemsCompanyDto.menu,
+      ...menuItemsCompanyDto.menuConfigs,
+    ];
+
+    const menuItemsObjectIds = menuItemsList.map((id) => new ObjectId(id));
+    const menuItemsFound = await this.menuItemModel.find({
+      _id: { $in: menuItemsObjectIds },
+    });
+
+    if (menuItemsFound.length !== menuItemsList.length) {
+      throw new Error('Invalid menu item');
+    }
+
+    const existingMenuItemsCompany = await this.menuItemCompanyModel.find({
+      tenantId,
+      role: 'client',
+    });
+    if (existingMenuItemsCompany.length > 0) {
+      const updateData = {
+        menu: menuItemsCompanyDto.menu,
+        menuConfigs: menuItemsCompanyDto.menuConfigs,
+      };
+      return this.update(existingMenuItemsCompany[0]._id, updateData);
+    }
+
     return this.create(menuItemsCompanyDto);
   }
 
