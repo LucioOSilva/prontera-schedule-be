@@ -19,8 +19,8 @@ export class UserService extends EntityService<UserDocument> {
   private roleHierarchy(role: string): string[] | null {
     switch (role) {
       case 'admin':
-        return ['recepcionist', 'doctor', 'patient'];
-      case 'recepcionist':
+        return ['receptionist', 'doctor', 'patient'];
+      case 'receptionist':
         return ['patient'];
       case 'doctor':
         return ['patient'];
@@ -31,11 +31,16 @@ export class UserService extends EntityService<UserDocument> {
 
   private verifyRoleAllow(loggedUserRole: string, role: string): boolean {
     switch (loggedUserRole) {
+      case 'superadmin':
+        role === 'receptionist' ||
+          role === 'doctor' ||
+          role === 'patient' ||
+          role === 'admin';
       case 'admin':
         return (
-          role === 'recepcionist' || role === 'doctor' || role === 'patient'
+          role === 'receptionist' || role === 'doctor' || role === 'patient'
         );
-      case 'recepcionist':
+      case 'receptionist':
         return role === 'patient';
       default:
         return false;
@@ -49,6 +54,13 @@ export class UserService extends EntityService<UserDocument> {
     return this.findOne({ tenantId, email });
   }
 
+  async findByTenantAndPhone(
+    tenantId: string,
+    phone: string,
+  ): Promise<UserDocument | null> {
+    return this.findOne({ tenantId, phone });
+  }
+
   async findByTenantAndId(
     tenantId: string,
     id: string,
@@ -60,10 +72,10 @@ export class UserService extends EntityService<UserDocument> {
     loggedUser: LoggedUser,
     userDTO: UserDto,
   ): Promise<UserDocument | null> {
-    const userExists = await this.findByTenantAndEmail(
-      userDTO.tenantId,
-      userDTO.email,
-    );
+    const userExists = await this.findOne({
+      tenantId: userDTO.tenantId,
+      phone: userDTO.phone,
+    });
 
     if (userExists) {
       throw new HttpException('User already exists', 400);
@@ -78,10 +90,19 @@ export class UserService extends EntityService<UserDocument> {
       );
     }
 
+    if (!userDTO.email) {
+      userDTO.email = this.encryptService.generateRandomEmail(userDTO.tenantId);
+    }
+
     const hashedPassword = this.encryptService.encrypt(userDTO.password);
     const user = await this.create({
       ...userDTO,
       password: hashedPassword,
+    }).catch((_error) => {
+      throw new HttpException(
+        'Unable to create user, phone or email already exists',
+        400,
+      );
     });
     return user;
   }

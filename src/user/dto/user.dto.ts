@@ -37,8 +37,8 @@ export class UserDto {
 
   @IsString()
   @IsNotEmpty()
-  @IsIn(['admin', 'recepcionist', 'doctor', 'patient'])
-  role?: 'admin' | 'recepcionist' | 'doctor' | 'patient';
+  @IsIn(['admin', 'receptionist', 'doctor', 'patient'])
+  role?: 'admin' | 'receptionist' | 'doctor' | 'patient';
 
   @IsString()
   @MinLength(3)

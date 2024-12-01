@@ -19,7 +19,7 @@ import { LoggedUser } from 'src/auth/types';
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @Roles('admin', 'recepcionist')
+  @Roles('superadmin', 'admin', 'receptionist')
   @UseGuards(JwtAuthGuard)
   @Post('/create')
   async createUser(
@@ -30,7 +30,6 @@ export class UserController {
     return user;
   }
 
-  @Roles('admin', 'recepcionist')
   @UseGuards(JwtAuthGuard)
   @Get('/by-email/:email')
   async getUserByEmail(
@@ -45,7 +44,6 @@ export class UserController {
     return user;
   }
 
-  @Roles('admin', 'recepcionist')
   @UseGuards(JwtAuthGuard)
   @Get('/by-id/:id')
   async getUserById(

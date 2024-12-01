@@ -19,4 +19,11 @@ export class EncryptService {
     const hashedPassword = this.encrypt(text);
     return hashedPassword === encryptedText;
   }
+
+  generateRandomEmail(tenantId: string): string {
+    const min = 0;
+    const max = 99999;
+    const random = Math.floor(Math.random() * (max - min + 1)) + min;
+    return `${tenantId}.${random}@randomized.com`;
+  }
 }

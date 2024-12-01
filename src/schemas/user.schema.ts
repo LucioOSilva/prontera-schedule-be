@@ -8,10 +8,10 @@ export class User {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   phone: string;
 
-  @Prop({ required: false, default: null })
+  @Prop({ required: true, unique: true })
   email: string;
 
   @Prop({ required: false, default: null })
@@ -39,7 +39,7 @@ export class User {
 
   @Prop({
     required: true,
-    enum: ['admin', 'recepcionist', 'doctor', 'patient'],
+    enum: ['admin', 'receptionist', 'doctor', 'patient'],
     default: 'patient',
   })
   role: string;
