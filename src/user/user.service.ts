@@ -32,10 +32,12 @@ export class UserService extends EntityService<UserDocument> {
   private verifyRoleAllow(loggedUserRole: string, role: string): boolean {
     switch (loggedUserRole) {
       case 'superadmin':
-        role === 'receptionist' ||
+        return (
+          role === 'receptionist' ||
           role === 'doctor' ||
           role === 'patient' ||
-          role === 'admin';
+          role === 'admin'
+        );
       case 'admin':
         return (
           role === 'receptionist' || role === 'doctor' || role === 'patient'
@@ -78,10 +80,14 @@ export class UserService extends EntityService<UserDocument> {
     });
 
     if (userExists) {
-      throw new HttpException('User already exists', 400);
+      throw new HttpException(
+        'User already exists, phone or email already in use',
+        400,
+      );
     }
 
     const isAbleToCreate = this.verifyRoleAllow(loggedUser.role, userDTO.role);
+    console.log('able', isAbleToCreate);
 
     if (!isAbleToCreate) {
       throw new HttpException(
