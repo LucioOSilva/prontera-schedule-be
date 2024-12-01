@@ -1,3 +1,3 @@
-import { EncryptService } from './EncryptService';
+import { UtilsService } from './UtilsService';
 
-export { EncryptService };
+export { UtilsService };

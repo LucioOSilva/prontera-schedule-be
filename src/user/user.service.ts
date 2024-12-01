@@ -2,7 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from '../schemas/user.schema';
 import { UserDto } from './dto/user.dto';
-import { EncryptService } from '../utils';
+import { UtilsService } from '../utils';
 import { EntityService } from '../common/entity.service'; // Importando EntityService
 import { Model } from 'mongoose';
 import { LoggedUser } from 'src/auth/types';
@@ -11,7 +11,7 @@ import { LoggedUser } from 'src/auth/types';
 export class UserService extends EntityService<UserDocument> {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
-    private readonly encryptService: EncryptService,
+    private readonly utilsService: UtilsService,
   ) {
     super(userModel);
   }
@@ -97,10 +97,10 @@ export class UserService extends EntityService<UserDocument> {
     }
 
     if (!userDTO.email) {
-      userDTO.email = this.encryptService.generateRandomEmail(userDTO.tenantId);
+      userDTO.email = this.utilsService.generateRandomEmail(userDTO.tenantId);
     }
 
-    const hashedPassword = this.encryptService.encrypt(userDTO.password);
+    const hashedPassword = this.utilsService.encrypt(userDTO.password);
     const user = await this.create({
       ...userDTO,
       password: hashedPassword,

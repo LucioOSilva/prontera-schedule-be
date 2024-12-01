@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { createHash } from 'crypto';
 
 @Injectable()
-export class EncryptService {
+export class UtilsService {
   private readonly encryptedSecret: string;
 
   constructor() {
@@ -10,6 +10,7 @@ export class EncryptService {
   }
 
   encrypt(text: string): string {
+    console.log('ENC', this.encryptedSecret);
     const hash = createHash('sha256');
     hash.update(text + this.encryptedSecret);
     return hash.digest('hex');

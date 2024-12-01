@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
-import { EncryptService } from '../utils';
+import { UtilsService } from '../utils';
 import { AuthDto } from './dto/auth.dto';
 import { LoggedUser, Token, TokenValid } from './types';
 
@@ -10,7 +10,7 @@ export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
-    private encryptService: EncryptService,
+    private utilsService: UtilsService,
   ) {}
 
   private async validateAuthUser(
@@ -22,7 +22,7 @@ export class AuthService {
     const returnFields = { tenantId: 1, password: 1 };
     const user = await this.userService.findOne(query, returnFields);
     if (!user) return false;
-    const isValidPassword = this.encryptService.checkEncrypt(
+    const isValidPassword = this.utilsService.checkEncrypt(
       password,
       user.password,
     );
