@@ -14,8 +14,8 @@ export class MenuItemsCompanyDto {
 
   @IsOptional()
   @IsString()
-  @IsIn(['admin', 'client', 'guest'])
-  role?: 'admin' | 'client' | 'guest';
+  @IsIn(['admin', 'recepcionist', 'doctor', 'patient'])
+  role?: 'admin' | 'recepcionist' | 'doctor' | 'patient';
 
   @IsArray()
   @IsString({ each: true })

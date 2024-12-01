@@ -63,7 +63,7 @@ export class MenuItemsCompanyService extends EntityService<MenuItemsCompanyDocum
   ): Promise<MenuItemsCompanyType> {
     const { tenantId } = user;
     menuItemsCompanyDto.tenantId = tenantId;
-    menuItemsCompanyDto.role = 'client';
+    menuItemsCompanyDto.role = 'patient';
     const menuItemsList = [
       ...menuItemsCompanyDto.menu,
       ...menuItemsCompanyDto.menuConfigs,
