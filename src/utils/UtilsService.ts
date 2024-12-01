@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { createHash } from 'crypto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UtilsService {
   private readonly encryptedSecret: string;
 
-  constructor() {
-    this.encryptedSecret = process.env.ENCRYPT_SECRET;
+  constructor(configService: ConfigService) {
+    this.encryptedSecret = configService.get<string>('ENCRYPT_SECRET');
   }
 
   encrypt(text: string): string {
