@@ -87,7 +87,6 @@ export class UserService extends EntityService<UserDocument> {
     }
 
     const isAbleToCreate = this.verifyRoleAllow(loggedUser.role, userDTO.role);
-    console.log('able', isAbleToCreate);
 
     if (!isAbleToCreate) {
       throw new HttpException(

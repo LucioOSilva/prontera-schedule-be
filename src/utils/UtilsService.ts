@@ -11,7 +11,6 @@ export class UtilsService {
   }
 
   encrypt(text: string): string {
-    console.log('ENC', this.encryptedSecret);
     const hash = createHash('sha256');
     hash.update(text + this.encryptedSecret);
     return hash.digest('hex');
