@@ -8,8 +8,28 @@ export class User {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true })
+  phone: string;
+
+  @Prop({ required: false, default: null })
   email: string;
+
+  @Prop({ required: false, default: null })
+  cpf: string;
+
+  @Prop({
+    required: false,
+    enum: ['male', 'female', null],
+    default: 'null',
+  })
+  gender: string;
+
+  @Prop({
+    required: false,
+    enum: ['single', 'married', 'divorced', null],
+    default: 'null',
+  })
+  maritalStatus: string;
 
   @Prop({ required: true })
   tenantId: string;
@@ -23,9 +43,6 @@ export class User {
     default: 'patient',
   })
   role: string;
-
-  @Prop({ default: Date.now })
-  createdAt: Date;
 
   @Prop({ select: false })
   __v: number;

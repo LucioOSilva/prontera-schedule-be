@@ -4,6 +4,7 @@ import {
   IsEmail,
   IsNotEmpty,
   MinLength,
+  IsOptional,
 } from 'class-validator';
 
 export class UserDto {
@@ -11,9 +12,24 @@ export class UserDto {
   @MinLength(6)
   name: string;
 
-  @IsEmail()
+  @IsString()
   @IsNotEmpty()
-  email: string;
+  phone: string;
+
+  @IsOptional()
+  @IsEmail()
+  email?: string = null;
+
+  @IsOptional()
+  cpf?: string = null;
+
+  @IsOptional()
+  @IsIn(['male', 'female', null])
+  gender?: string = null;
+
+  @IsOptional()
+  @IsIn(['single', 'married', 'divorced', null])
+  maritalStatus?: string = null;
 
   @IsString()
   @MinLength(6)
