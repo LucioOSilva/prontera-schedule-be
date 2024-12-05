@@ -14,7 +14,7 @@ import { UserDto } from './dto/user.dto';
 import { User } from '../schemas/user.schema';
 import { User as UserDecorator } from 'src/auth/decorators/User';
 import { Roles } from 'src/auth/decorators/Roles';
-import { LoggedUser } from 'src/auth/types';
+import { LoggedUser, Role } from 'src/auth/types';
 import { UserDocument } from '../schemas/user.schema';
 
 @Controller('api/users')
@@ -43,9 +43,7 @@ export class UserController {
       loggedUser.tenantId,
       email,
     );
-    if (!user) throw new HttpException('User not found', 404);
     return user;
-    // TODO : Adicionar type no response
   }
 
   @UseGuards(JwtAuthGuard)
@@ -58,18 +56,21 @@ export class UserController {
       loggedUser.tenantId,
       id,
     );
-    if (!user) throw new HttpException('User not found', 404);
-    // TODO : Adicionar type no response
     return user;
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/patients')
-  async getPatients(
+  @Get('/by-role/:role')
+  async getAllPatients(
+    @Param('role') role: Role,
     @Query() filter: Partial<UserDto>,
     @UserDecorator() loggedUser: LoggedUser,
   ): Promise<UserDocument[]> {
-    const patients = await this.userService.findAllPatients(loggedUser, filter);
+    const patients = await this.userService.findAllPatients(
+      role,
+      loggedUser,
+      filter,
+    );
     return patients;
   }
 }

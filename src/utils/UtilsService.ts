@@ -29,6 +29,19 @@ export class UtilsService {
     return `${tenantId}.${random}@randomized.com`;
   }
 
+  roleHierarchy(role: Role): Role[] | null {
+    switch (role) {
+      case 'admin':
+        return ['receptionist', 'doctor', 'patient', 'admin'];
+      case 'receptionist':
+        return ['patient', 'doctor'];
+      case 'doctor':
+        return ['patient'];
+      default:
+        return null;
+    }
+  }
+
   verifyRoleAllow(loggedUserRole: Role, role: Role): boolean {
     switch (loggedUserRole) {
       case 'superadmin':

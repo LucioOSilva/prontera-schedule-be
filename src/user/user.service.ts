@@ -17,19 +17,6 @@ export class UserService extends EntityService<UserDocument> {
     super(userModel);
   }
 
-  private roleHierarchy(role: string): string[] | null {
-    switch (role) {
-      case 'admin':
-        return ['receptionist', 'doctor', 'patient'];
-      case 'receptionist':
-        return ['patient'];
-      case 'doctor':
-        return ['patient'];
-      default:
-        return null;
-    }
-  }
-
   private createMatcher(
     role: Role,
     loggedUser: LoggedUser,
@@ -122,11 +109,23 @@ export class UserService extends EntityService<UserDocument> {
   }
 
   public async findAllPatients(
+    role: Role,
     loggedUser: LoggedUser,
     filter: Partial<UserDto> = {},
   ): Promise<UserDocument[]> {
+    const allowedRetriveRoles = this.utilsService.roleHierarchy(
+      loggedUser.role,
+    );
+
+    if (!allowedRetriveRoles || !allowedRetriveRoles.includes(role)) {
+      throw new HttpException(
+        `Unauthorized to retrieve '${role}' of this role`,
+        403,
+      );
+    }
+
     const patientMatcher: Record<string, any> = this.createMatcher(
-      'patient',
+      role,
       loggedUser,
       filter,
     );
