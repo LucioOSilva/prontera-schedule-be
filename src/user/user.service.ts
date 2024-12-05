@@ -79,6 +79,13 @@ export class UserService extends EntityService<UserDocument> {
       );
     }
 
+    if (loggedUser.tenantId !== userDTO.tenantId) {
+      throw new HttpException(
+        'Not allowed, unable to create user for another tenant',
+        405,
+      );
+    }
+
     const isAbleToCreate = this.utilsService.verifyRoleAllow(
       loggedUser.role,
       userDTO.role,
@@ -108,7 +115,7 @@ export class UserService extends EntityService<UserDocument> {
     return user;
   }
 
-  public async findAllPatients(
+  public async findAllByRole(
     role: Role,
     loggedUser: LoggedUser,
     filter: Partial<UserDto> = {},

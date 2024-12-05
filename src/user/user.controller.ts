@@ -28,49 +28,37 @@ export class UserController {
     @UserDecorator() loggedUser: LoggedUser,
     @Body() userData: UserDto,
   ): Promise<UserDocument> {
-    const user = await this.userService.createUser(loggedUser, userData);
-    return user;
-    // TODO : Adicionar lógica para somente criar um user do mesmo tenant. (exceto "superadmin")
+    return await this.userService.createUser(loggedUser, userData);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('/by-email/:email')
-  async getUserByEmail(
+  async findByTenantAndEmail(
     @Param('email') email: string,
     @UserDecorator() loggedUser: LoggedUser,
   ): Promise<UserDocument> {
-    const user = await this.userService.findByTenantAndEmail(
+    return await this.userService.findByTenantAndEmail(
       loggedUser.tenantId,
       email,
     );
-    return user;
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('/by-id/:id')
-  async getUserById(
+  async findByTenantAndId(
     @Param('id') id: string,
     @UserDecorator() loggedUser: LoggedUser,
   ): Promise<UserDocument> {
-    const user = await this.userService.findByTenantAndId(
-      loggedUser.tenantId,
-      id,
-    );
-    return user;
+    return await this.userService.findByTenantAndId(loggedUser.tenantId, id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('/by-role/:role')
-  async getAllPatients(
+  async findAllByRole(
     @Param('role') role: Role,
     @Query() filter: Partial<UserDto>,
     @UserDecorator() loggedUser: LoggedUser,
   ): Promise<UserDocument[]> {
-    const patients = await this.userService.findAllPatients(
-      role,
-      loggedUser,
-      filter,
-    );
-    return patients;
+    return await this.userService.findAllByRole(role, loggedUser, filter);
   }
 }
