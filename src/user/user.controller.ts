@@ -31,6 +31,7 @@ export class UserController {
     return await this.userService.createUser(loggedUser, userData);
   }
 
+  @Roles('superadmin', 'admin')
   @UseGuards(JwtAuthGuard)
   @Get('/by-email/:email')
   async findByTenantAndEmail(
