@@ -6,6 +6,7 @@ import { UtilsService } from '../utils';
 import { EntityService } from '../common/entity.service'; // Importando EntityService
 import { Model } from 'mongoose';
 import { LoggedUser } from 'src/auth/types';
+import { Role } from 'src/auth/types';
 
 @Injectable()
 export class UserService extends EntityService<UserDocument> {
@@ -29,21 +30,46 @@ export class UserService extends EntityService<UserDocument> {
     }
   }
 
-  async findByTenantAndEmail(
+  private createMatcher(
+    role: Role,
+    loggedUser: LoggedUser,
+    filter: Partial<UserDto>,
+  ): Record<string, any> {
+    const { name, email, ...filterRest } = filter;
+    const tenantId = loggedUser.tenantId;
+
+    const matcher: Record<string, any> = {
+      tenantId,
+      role,
+      ...filterRest,
+    };
+
+    if (name) {
+      matcher.name = { $regex: name, $options: 'i' };
+    }
+
+    if (email) {
+      matcher.email = { $regex: email, $options: 'i' };
+    }
+
+    return matcher;
+  }
+
+  public async findByTenantAndEmail(
     tenantId: string,
     email: string,
   ): Promise<UserDocument | null> {
     return this.findOne({ tenantId, email });
   }
 
-  async findByTenantAndPhone(
+  public async findByTenantAndPhone(
     tenantId: string,
     phone: string,
   ): Promise<UserDocument | null> {
     return this.findOne({ tenantId, phone });
   }
 
-  async findByTenantAndId(
+  public async findByTenantAndId(
     tenantId: string,
     id: string,
   ): Promise<UserDocument | null> {
@@ -99,24 +125,13 @@ export class UserService extends EntityService<UserDocument> {
     loggedUser: LoggedUser,
     filter: Partial<UserDto> = {},
   ): Promise<UserDocument[]> {
-    const { name, email, ...filterRest } = filter;
-    const tenantId = loggedUser.tenantId;
+    const patientMatcher: Record<string, any> = this.createMatcher(
+      'patient',
+      loggedUser,
+      filter,
+    );
 
-    const matcher: Record<string, any> = {
-      tenantId,
-      role: 'patient',
-      ...filterRest,
-    };
-
-    if (name) {
-      matcher.name = { $regex: name, $options: 'i' };
-    }
-
-    if (email) {
-      matcher.email = { $regex: email, $options: 'i' };
-    }
-
-    const patients = await this.findAll(matcher);
+    const patients = await this.findAll(patientMatcher);
     return patients;
   }
 }
