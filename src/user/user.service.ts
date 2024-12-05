@@ -29,26 +29,6 @@ export class UserService extends EntityService<UserDocument> {
     }
   }
 
-  private verifyRoleAllow(loggedUserRole: string, role: string): boolean {
-    switch (loggedUserRole) {
-      case 'superadmin':
-        return (
-          role === 'receptionist' ||
-          role === 'doctor' ||
-          role === 'patient' ||
-          role === 'admin'
-        );
-      case 'admin':
-        return (
-          role === 'receptionist' || role === 'doctor' || role === 'patient'
-        );
-      case 'receptionist':
-        return role === 'patient';
-      default:
-        return false;
-    }
-  }
-
   async findByTenantAndEmail(
     tenantId: string,
     email: string,
@@ -86,7 +66,10 @@ export class UserService extends EntityService<UserDocument> {
       );
     }
 
-    const isAbleToCreate = this.verifyRoleAllow(loggedUser.role, userDTO.role);
+    const isAbleToCreate = this.utilsService.verifyRoleAllow(
+      loggedUser.role,
+      userDTO.role,
+    );
 
     if (!isAbleToCreate) {
       throw new HttpException(
@@ -110,5 +93,30 @@ export class UserService extends EntityService<UserDocument> {
       );
     });
     return user;
+  }
+
+  public async findAllPatients(
+    loggedUser: LoggedUser,
+    filter: Partial<UserDto> = {},
+  ): Promise<UserDocument[]> {
+    const { name, email, ...filterRest } = filter;
+    const tenantId = loggedUser.tenantId;
+
+    const matcher: Record<string, any> = {
+      tenantId,
+      role: 'patient',
+      ...filterRest,
+    };
+
+    if (name) {
+      matcher.name = { $regex: name, $options: 'i' };
+    }
+
+    if (email) {
+      matcher.email = { $regex: email, $options: 'i' };
+    }
+
+    const patients = await this.findAll(matcher);
+    return patients;
   }
 }

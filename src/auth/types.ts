@@ -1,8 +1,15 @@
+export type Role =
+  | 'superadmin'
+  | 'admin'
+  | 'receptionist'
+  | 'doctor'
+  | 'patient';
+
 export type LoggedUser = {
   id: string;
   name: string;
   email: string;
-  role: string;
+  role: Role;
   tenantId: string;
   createdAt: Date;
 };
