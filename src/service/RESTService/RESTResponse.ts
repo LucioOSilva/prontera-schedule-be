@@ -10,7 +10,7 @@ export const RESTResponse = (
   message: string = null,
 ) => {
   return {
-    statusCode: statusCode,
+    statusCode,
     data,
     message: message ? (Array.isArray(message) ? message[0] : message) : null,
   } as IRESTResponse<any>;
