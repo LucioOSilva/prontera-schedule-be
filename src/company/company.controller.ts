@@ -19,14 +19,14 @@ import { CompanyDto } from './dto/company.dto';
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
 
-  @Roles('admin')
+  @Roles('superadmin')
   @UseGuards(JwtAuthGuard)
   @Post('/create')
   async create(@Body() data: CompanyDto): Promise<Company> {
     return this.companyService.create(data);
   }
 
-  @Roles('admin')
+  @Roles('superadmin')
   @UseGuards(JwtAuthGuard)
   @Get('/')
   async findAll(): Promise<Company[]> {
@@ -46,7 +46,7 @@ export class CompanyController {
     return this.companyService.findById(id);
   }
 
-  @Roles('admin')
+  @Roles('superadmin')
   @UseGuards(JwtAuthGuard)
   @Patch('/:id')
   async update(
@@ -56,7 +56,7 @@ export class CompanyController {
     return this.companyService.update(id, data);
   }
 
-  @Roles('admin')
+  @Roles('superadmin')
   @UseGuards(JwtAuthGuard)
   @Delete('/:id')
   async delete(@Param('id') id: string): Promise<Company | null> {

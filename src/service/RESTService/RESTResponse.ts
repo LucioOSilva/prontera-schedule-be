@@ -9,18 +9,9 @@ export const RESTResponse = (
   data: any = null,
   message: string = null,
 ) => {
-  const RESTResponse: IRESTResponse<any> = {
-    statusCode: null,
-    data: null,
-    message: null,
-  };
-
-  RESTResponse.statusCode = statusCode;
-  RESTResponse.data = data;
-  RESTResponse.message = message
-    ? Array.isArray(message)
-      ? message[0]
-      : message
-    : null;
-  return RESTResponse;
+  return {
+    statusCode: statusCode,
+    data,
+    message: message ? (Array.isArray(message) ? message[0] : message) : null,
+  } as IRESTResponse<any>;
 };
