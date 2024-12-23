@@ -24,16 +24,38 @@ export class UserDto {
   cpf?: string = null;
 
   @IsOptional()
-  @IsIn(['male', 'female', null])
+  @IsIn([
+    'mulher-cisgenero',
+    'mulher-transgenero',
+    'mulher-transexual',
+    'homem-cisgenero',
+    'homem-transgenero',
+    'homem-transexual',
+    'genero-nao-binario',
+    'agenero',
+    'genero-fluido',
+    'bigenero',
+    null,
+  ])
   gender?: string = null;
 
   @IsOptional()
-  @IsIn(['single', 'married', 'divorced', null])
+  @IsIn(['solteiro', 'casado', 'divorciado', 'viuvo', null])
   maritalStatus?: string = null;
 
-  @IsString()
+  @IsOptional()
+  @IsIn(['masculino', 'feminino', null])
+  sex?: string = null;
+
+  @IsOptional()
+  phoneIsWhatsapp?: boolean;
+
+  @IsOptional()
+  birthDate?: string = null;
+
+  @IsOptional()
   @MinLength(6)
-  password: string;
+  password: string = null;
 
   @IsString()
   @IsNotEmpty()
