@@ -64,9 +64,13 @@ export class UserService extends EntityService<UserDocument> {
   }
 
   public async createUser(
+    role: Role,
     loggedUser: LoggedUser,
     userDTO: UserDto,
   ): Promise<UserDocument | null> {
+    userDTO.tenantId = loggedUser.tenantId;
+    userDTO.createdBy = loggedUser._id;
+
     const userExists = await this.findOne({
       tenantId: userDTO.tenantId,
       phone: userDTO.phone,
@@ -79,16 +83,9 @@ export class UserService extends EntityService<UserDocument> {
       );
     }
 
-    if (loggedUser.tenantId !== userDTO.tenantId) {
-      throw new HttpException(
-        'Not allowed, unable to create user for another tenant',
-        405,
-      );
-    }
-
     const isAbleToCreate = this.utilsService.verifyRoleAllow(
       loggedUser.role,
-      userDTO.role,
+      role,
     );
 
     if (!isAbleToCreate) {
@@ -102,11 +99,13 @@ export class UserService extends EntityService<UserDocument> {
       userDTO.email = this.utilsService.generateRandomEmail(userDTO.tenantId);
     }
 
-    const hashedPassword = this.utilsService.encrypt(userDTO.password);
-    const user = await this.create({
-      ...userDTO,
-      password: hashedPassword,
-    }).catch((_error) => {
+    if (!userDTO.password) {
+      userDTO.password = '123456';
+    } else {
+      userDTO.password = this.utilsService.encrypt(userDTO.password);
+    }
+
+    const user = await this.create(userDTO).catch((_error) => {
       throw new HttpException(
         'Unable to create user, phone or email already exists',
         400,

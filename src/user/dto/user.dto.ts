@@ -55,14 +55,17 @@ export class UserDto {
 
   @IsOptional()
   @MinLength(6)
-  password: string = null;
+  password?: string = null;
 
   @IsString()
   @IsNotEmpty()
   @IsIn(['admin', 'receptionist', 'doctor', 'patient'])
   role?: 'admin' | 'receptionist' | 'doctor' | 'patient';
 
-  @IsString()
+  @IsOptional()
   @MinLength(3)
-  tenantId: string;
+  tenantId?: string = null;
+
+  @IsOptional()
+  createdBy?: string = null;
 }

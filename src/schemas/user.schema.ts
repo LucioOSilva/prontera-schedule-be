@@ -66,11 +66,11 @@ export class User {
   })
   role: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, minlength: 3 })
   tenantId: string;
 
-  @Prop({ select: false })
-  __v: number;
+  @Prop({ required: true, select: false })
+  createdBy: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

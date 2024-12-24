@@ -23,12 +23,13 @@ export class UserController {
 
   @Roles('superadmin', 'admin', 'receptionist')
   @UseGuards(JwtAuthGuard)
-  @Post('/create')
+  @Post('/create/:role')
   async createUser(
     @UserDecorator() loggedUser: LoggedUser,
     @Body() userData: UserDto,
+    @Param('role') role: Role,
   ): Promise<UserDocument> {
-    return await this.userService.createUser(loggedUser, userData);
+    return await this.userService.createUser(role, loggedUser, userData);
   }
 
   @Roles('superadmin', 'admin')

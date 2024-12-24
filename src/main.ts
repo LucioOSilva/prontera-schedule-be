@@ -5,9 +5,20 @@ import {
   ExceptionInterceptorFilter,
   ResponseInterceptor,
 } from './service/RESTService';
+import mongoose from 'mongoose';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  mongoose.set('toJSON', {
+    virtuals: true, // Inclui campos virtuais
+    versionKey: false, // Remove o campo `__v`
+    // transform: (doc, ret) => {
+    //   ret.id = ret._id; // Adiciona o campo `id`
+    //   delete ret._id; // Remove o campo `_id`
+    //   return ret;
+    // },
+  });
 
   app.enableCors({
     origin: '*', // Permitir requisições de qualquer origem
