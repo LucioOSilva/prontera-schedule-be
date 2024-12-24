@@ -57,8 +57,7 @@ export class UserDto {
   @MinLength(6)
   password?: string = null;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @IsIn(['admin', 'receptionist', 'doctor', 'patient'])
   role?: 'admin' | 'receptionist' | 'doctor' | 'patient';
 

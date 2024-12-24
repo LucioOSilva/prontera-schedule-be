@@ -11,8 +11,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   mongoose.set('toJSON', {
-    virtuals: true, // Inclui campos virtuais
     versionKey: false, // Remove o campo `__v`
+    // virtuals: true, // Inclui campos virtuais
     // transform: (doc, ret) => {
     //   ret.id = ret._id; // Adiciona o campo `id`
     //   delete ret._id; // Remove o campo `_id`
