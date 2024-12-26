@@ -7,6 +7,7 @@ import {
   HttpException,
   UseGuards,
   Query,
+  Patch,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UserService } from './user.service';
@@ -62,5 +63,15 @@ export class UserController {
     @UserDecorator() loggedUser: LoggedUser,
   ): Promise<UserDocument[]> {
     return await this.userService.findAllByRole(role, loggedUser, filter);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('/update/:id')
+  async updateUserById(
+    @Param('id') id: string,
+    @UserDecorator() loggedUser: LoggedUser,
+    @Body() userData: Partial<UserDto>,
+  ): Promise<UserDocument> {
+    return await this.userService.updateUserById(loggedUser, id, userData);
   }
 }

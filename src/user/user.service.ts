@@ -17,6 +17,58 @@ export class UserService extends EntityService<UserDocument> {
     super(userModel);
   }
 
+  private checkIsAbleToCreate = async (
+    userDTO: Partial<UserDto>,
+    loggedUser: LoggedUser,
+    role: Role,
+  ) => {
+    const tenantId = userDTO.tenantId;
+    const phone = userDTO.phone;
+
+    if (!tenantId || !phone || !role) {
+      throw new HttpException(
+        'Unable to create user, missing tenantId or phone or role',
+        400,
+      );
+    }
+
+    const userExists = await this.findOne({
+      tenantId,
+      phone,
+    });
+
+    if (userExists) {
+      throw new HttpException(
+        'User already exists, phone or email already in use',
+        400,
+      );
+    }
+
+    const isAllowedRole = this.utilsService.verifyRoleAllow(
+      loggedUser.role,
+      role,
+    );
+
+    if (!isAllowedRole) {
+      throw new HttpException('Unable, insufficient permissions', 403);
+    }
+  };
+
+  private checkIsAbleToUpdate = async (
+    userDTO: Partial<UserDto>,
+    loggedUser: LoggedUser,
+    role: Role,
+  ) => {
+    const isAllowedRole = this.utilsService.verifyRoleAllow(
+      loggedUser.role,
+      userDTO.role,
+    );
+
+    if (!isAllowedRole) {
+      throw new HttpException('Unable, insufficient permissions', 403);
+    }
+  };
+
   private createMatcher(
     role: Role,
     loggedUser: LoggedUser,
@@ -71,34 +123,14 @@ export class UserService extends EntityService<UserDocument> {
     userDTO.tenantId = loggedUser.tenantId;
     userDTO.createdBy = loggedUser._id;
 
-    const userExists = await this.findOne({
-      tenantId: userDTO.tenantId,
-      phone: userDTO.phone,
-    });
+    await this.checkIsAbleToCreate(userDTO, loggedUser, role);
 
-    if (userExists) {
-      throw new HttpException(
-        'User already exists, phone or email already in use',
-        400,
-      );
-    }
-
-    const isAbleToCreate = this.utilsService.verifyRoleAllow(
-      loggedUser.role,
-      role,
-    );
-
-    if (!isAbleToCreate) {
-      throw new HttpException(
-        'Unable to create user, insufficient permissions',
-        403,
-      );
-    }
-
+    // If no email is provided, generate a random one
     if (!userDTO.email) {
       userDTO.email = this.utilsService.generateRandomEmail(userDTO.tenantId);
     }
 
+    // If no password is provided, use a default one
     if (!userDTO.password) {
       userDTO.password = '123456';
     } else {
@@ -138,5 +170,23 @@ export class UserService extends EntityService<UserDocument> {
 
     const patients = await this.findAll(patientMatcher);
     return patients;
+  }
+
+  public async updateUserById(
+    loggedUser: LoggedUser,
+    id: string,
+    userDTO: Partial<UserDto>,
+  ): Promise<UserDocument | null> {
+    userDTO.tenantId = loggedUser.tenantId;
+    userDTO.updatedBy = loggedUser._id;
+
+    await this.checkIsAbleToUpdate(userDTO, loggedUser, userDTO.role);
+
+    if (userDTO.password) {
+      userDTO.password = this.utilsService.encrypt(userDTO.password);
+    }
+
+    const user = await this.updateById(id, userDTO);
+    return user;
   }
 }

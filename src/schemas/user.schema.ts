@@ -69,8 +69,11 @@ export class User {
   @Prop({ required: true, minlength: 3 })
   tenantId: string;
 
-  @Prop({ required: true, select: false })
+  @Prop({ required: false, select: false, default: null })
   createdBy: string;
+
+  @Prop({ required: false, select: false, default: null })
+  updatedBy: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

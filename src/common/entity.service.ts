@@ -23,7 +23,7 @@ export class EntityService<T extends Document> {
     return entity.save();
   }
 
-  async update(
+  async updateById(
     id: string | ObjectId,
     entityDTO: Partial<T>,
   ): Promise<T | null> {

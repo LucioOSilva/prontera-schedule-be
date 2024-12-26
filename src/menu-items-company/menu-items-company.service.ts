@@ -47,7 +47,7 @@ export class MenuItemsCompanyService extends EntityService<MenuItemsCompanyDocum
         menu: itemsMenuStringIds,
         menuConfigs: itemsMenuConfigsStringIds,
       };
-      return this.update(existingMenuItemsCompany[0]._id, updateData);
+      return this.updateById(existingMenuItemsCompany[0]._id, updateData);
     }
     return this.create({
       tenantId,
@@ -87,7 +87,7 @@ export class MenuItemsCompanyService extends EntityService<MenuItemsCompanyDocum
         menu: menuItemsCompanyDto.menu,
         menuConfigs: menuItemsCompanyDto.menuConfigs,
       };
-      return this.update(existingMenuItemsCompany[0]._id, updateData);
+      return this.updateById(existingMenuItemsCompany[0]._id, updateData);
     }
 
     return this.create(menuItemsCompanyDto);

@@ -53,7 +53,7 @@ export class CompanyController {
     @Param('id') id: string,
     @Body() data: Partial<Company>,
   ): Promise<Company | null> {
-    return this.companyService.update(id, data);
+    return this.companyService.updateById(id, data);
   }
 
   @Roles('superadmin')

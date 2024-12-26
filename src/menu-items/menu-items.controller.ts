@@ -47,7 +47,7 @@ export class MenuItemsController {
     @Param('id') id: string,
     @Body() menuItemDto: Partial<MenuItem>,
   ): Promise<MenuItem | null> {
-    return this.menuItemsService.update(id, menuItemDto);
+    return this.menuItemsService.updateById(id, menuItemDto);
   }
 
   @Roles('superadmin')

@@ -67,4 +67,7 @@ export class UserDto {
 
   @IsOptional()
   createdBy?: string = null;
+
+  @IsOptional()
+  updatedBy?: string = null;
 }
